@@ -347,7 +347,9 @@
       <div class="term-commands" id="cmd-buttons" style="display:none">
         <button class="term-cmd-btn" onclick="runCmd('ls projects')">ls projects</button>
         <button class="term-cmd-btn" onclick="runCmd('cat experience.txt')">cat experience.txt</button>
-        <button class="term-cmd-btn" onclick="runCmd('cat skills.txt')">cat skills.txt</button>
+        <button class="term-cmd-btn" onclick="runCmd('cat stack.txt')">cat stack.txt</button>
+        <button class="term-cmd-btn" onclick="runCmd('cat rtb.txt')">cat rtb.txt</button>
+        <button class="term-cmd-btn" onclick="runCmd('git log --oneline')">git log --oneline</button>
         <button class="term-cmd-btn" onclick="runCmd('ping rootthisbox.org')">ping rootthisbox.org</button>
       </div>
       <div class="term-input-row" id="input-row" style="display:none">
@@ -710,14 +712,17 @@
   /* ── TERMINAL BOOT SEQUENCE ── */
   const lines = [
     { delay: 200,  html: '<div class="term-line typeout"><span class="hi">Brock Ramsey</span> <span class="dim">// bramz</span></div>' },
-    { delay: 400,  html: '<div class="term-line typeout"><span class="dim">Software Engineer · Security Researcher · Builder</span></div>' },
-    { delay: 600,  html: '<div class="term-line typeout"><span class="dim">Massachusetts, USA · UTC-04:00</span></div>' },
+    { delay: 400,  html: '<div class="term-line typeout"><span class="dim">Full Stack Engineer · Security Researcher · Founder</span></div>' },
+    { delay: 600,  html: '<div class="term-line typeout"><span class="dim">Plymouth, MA · UTC-04:00</span></div>' },
     { delay: 900,  html: '<div class="term-line typeout" style="margin-top:10px"><span class="prompt">bramz@portfolio</span> <span class="dim">~</span> <span style="color:#fff">$ cat about.txt</span></div>' },
-    { delay: 1100, html: '<div class="term-line typeout"><span style="color:#ffb830">Arctic Code Vault Contributor</span> · <span style="color:#4dc8ff">Pull Shark ×3</span></div>' },
-    { delay: 1300, html: '<div class="term-line typeout"><span style="color:#4dc8ff">Built NYS SNAP Finance System</span> · <span style="color:#b48fff">Nationwide Title SaaS @ Apexiem</span></div>' },
-    { delay: 1500, html: '<div class="term-line typeout"><span style="color:#ff4b4b">Founded RootThisBox</span> <span class="dim">— CTF wargame platform, Season 01 live</span></div>' },
-    { delay: 1700, html: '<div class="term-line typeout"><span class="dim">22 public repos · 118 stars given · perpetually shipping</span></div>' },
-    { delay: 2000, html: '<div class="term-line typeout" style="margin-top:10px"><span class="prompt">bramz@portfolio</span> <span class="dim">~</span> <span style="color:#fff">$ _</span><span class="blink">█</span></div>' },
+    { delay: 1100, html: '<div class="term-line typeout"><span style="color:#ffb830">Arctic Code Vault Contributor</span> · <span style="color:#4dc8ff">Pull Shark ×3</span> · <span style="color:#b48fff">22 public repos</span></div>' },
+    { delay: 1300, html: '<div class="term-line typeout"><span style="color:#4dc8ff">Built NYS SNAP Finance System</span> <span class="dim">→ statewide voucher issuance & reconciliation (app.hsny.online)</span></div>' },
+    { delay: 1500, html: '<div class="term-line typeout"><span style="color:#b48fff">Engineered Apexiem</span> <span class="dim">→ nationwide multi-tenant title search SaaS (apexiem.com)</span></div>' },
+    { delay: 1700, html: '<div class="term-line typeout"><span style="color:#4dc8ff">Senior Full Stack @ Dell</span> <span class="dim">→ license mgmt system · Angular · Django · PostgreSQL · VMware PCF</span></div>' },
+    { delay: 1900, html: '<div class="term-line typeout"><span style="color:#ffb830">Solar Eng @ Aborn</span> <span class="dim">→ AI monitoring pipeline · SolarEdge/Enphase APIs · predictive fault detection</span></div>' },
+    { delay: 2100, html: '<div class="term-line typeout"><span style="color:#ff4b4b">Founded RootThisBox</span> <span class="dim">→ ethical hacking CTF wargame · est. 2005 · Season 01 live</span></div>' },
+    { delay: 2300, html: '<div class="term-line typeout"><span class="dim">python · typescript · go · bash · docker · linux · llm agents · algo trading</span></div>' },
+    { delay: 2600, html: '<div class="term-line typeout" style="margin-top:10px"><span class="prompt">bramz@portfolio</span> <span class="dim">~</span> <span style="color:#fff">$ _</span><span class="blink">█</span></div>' },
   ];
 
   const area = document.getElementById('output-area');
@@ -725,14 +730,56 @@
   setTimeout(() => {
     document.getElementById('cmd-buttons').style.display = 'flex';
     document.getElementById('input-row').style.display = 'flex';
-  }, 2200);
+  }, 2800);
 
   const responses = {
-    'ls projects':       'serqet/  breadbot/  systemgo/  pharaoh/  gemini/  thoth/  <span class="dim">... +16 more</span>',
-    'cat experience.txt':'<span style="color:#4dc8ff">Saqus</span> → NYS SNAP Voucher Finance System (app.hsny.online)<br><span style="color:#b48fff">Apexiem</span> → Nationwide Title Search SaaS (apexiem.com)',
-    'cat skills.txt':    '<span style="color:#ffb830">langs:</span> python, typescript, go, bash | <span style="color:#ff4b4b">sec:</span> ctf, pentest, web-vulns | <span style="color:#4dc8ff">infra:</span> docker, linux, networking',
-    'ping rootthisbox.org': '<span style="color:#00ff88">PING rootthisbox.org: 64 bytes icmp_seq=0 ttl=64 time=12ms — 0% packet loss ✓</span>',
-    'help':              'available: ls projects, cat experience.txt, cat skills.txt, ping rootthisbox.org',
+    'ls projects': 'serqet/  breadbot/  systemgo/  pharaoh/  gemini/  thoth/  <span class="dim">... +16 more at github.com/bramz</span>',
+
+    'cat experience.txt': [
+      '<span style="color:#ffb830">Aborn Solar</span>  <span class="dim">Jan 2025–present · Solar Svc + Software Eng · Hybrid, Plymouth MA</span>',
+      '  <span class="dim">→ AI agent pipeline for predictive fault detection · SolarEdge/Enphase inverter API integration</span>',
+      '<span style="color:#4dc8ff">Dell Technologies</span>  <span class="dim">Jul–Sep 2024 · Senior Full Stack · Remote, Round Rock TX</span>',
+      '  <span class="dim">→ License mgmt system: Angular · Django · PostgreSQL · VMware PCF · mentored cross-functional team</span>',
+      '<span style="color:#b48fff">SaQus LLC</span>  <span class="dim">Apr 2022–Apr 2024 · Full Stack · Hybrid, Falmouth MA</span>',
+      '  <span style="color:#4dc8ff">→ app.hsny.online</span>  <span class="dim">NYS SNAP voucher issuance · multi-role auth · USDA compliance</span>',
+      '  <span style="color:#b48fff">→ apexiem.com</span>   <span class="dim">nationwide title SaaS · QuickBooks/Qualia integrations · multi-tenant</span>',
+      '<span style="color:#ffb830">Barque Energy Group</span>  <span class="dim">Feb 2019–Dec 2021 · Full Stack</span>',
+      '  <span class="dim">→ BDR Global WorkPack Software · replaced paper-based ops with full transaction mgmt platform</span>',
+    ].join('<br>'),
+
+    'cat stack.txt': [
+      '<span style="color:#ffb830">languages:</span>    <span class="dim">python (95%) · typescript (85%) · go (75%) · bash (90%)</span>',
+      '<span style="color:#ff4b4b">security:</span>     <span class="dim">ctf · pentesting · web vulns · reverse engineering · osint</span>',
+      '<span style="color:#4dc8ff">infra:</span>        <span class="dim">docker · linux · aws ec2/rds/s3 · vmware pcf · orchestration</span>',
+      '<span style="color:#b48fff">backend:</span>      <span class="dim">django · rest apis · postgresql · mongodb · multi-tenant saas</span>',
+      '<span style="color:#ffb830">frontend:</span>     <span class="dim">angular · typescript · responsive ui</span>',
+      '<span style="color:#00ff88">ai/ml:</span>        <span class="dim">llm agents · predictive analytics · yield forecasting · algo trading</span>',
+      '<span style="color:#4dc8ff">integrations:</span> <span class="dim">quickbooks api · qualia · solaredge · enphase</span>',
+      '<span style="color:#b48fff">process:</span>      <span class="dim">agile · jira · confluence · bitbucket · mentorship · architecture</span>',
+    ].join('<br>'),
+
+    'cat rtb.txt': [
+      '<span style="color:#ff4b4b">RootThisBox</span>  <span class="dim">rootthisbox.org</span>',
+      '<span class="dim">Ethical hacking CTF wargame — sister project to HackThisSite.org</span>',
+      '<span class="dim">Est. 2005 · rebuilt with modern infra · Season 01 live</span>',
+      '<span class="dim">Categories: web exploitation · binary analysis · crypto · osint · forensics</span>',
+      '<span class="dim">Community: discord.gg/egzwSKfM3m</span>',
+    ].join('<br>'),
+
+    'git log --oneline': [
+      '<span style="color:#ffb830">a3f9c12</span> <span class="dim">feat: ai agent pipeline for solar fault detection (aborn)</span>',
+      '<span style="color:#ffb830">e72b4d1</span> <span class="dim">feat: solaredge/enphase inverter api integration</span>',
+      '<span style="color:#ffb830">c91a830</span> <span class="dim">feat: license mgmt system — angular + django (dell)</span>',
+      '<span style="color:#ffb830">7d3e2f5</span> <span class="dim">feat: quickbooks + qualia integration (apexiem)</span>',
+      '<span style="color:#ffb830">2b1c9a4</span> <span class="dim">feat: nys snap voucher issuance + reconciliation (hsny)</span>',
+      '<span style="color:#ffb830">f4e8d3c</span> <span class="dim">feat: multi-tenant vendor/client portal (apexiem)</span>',
+      '<span style="color:#ffb830">8a07b6e</span> <span class="dim">chore: bdr global workpack — replace paper ops (barque)</span>',
+      '<span style="color:#ffb830">3c5f1d9</span> <span class="dim">init: rootthisbox.org season 01 relaunch</span>',
+    ].join('<br>'),
+
+    'ping rootthisbox.org': '<span style="color:#00ff88">PING rootthisbox.org: 64 bytes icmp_seq=0 ttl=64 time=11ms</span><br><span style="color:#00ff88">PING rootthisbox.org: 64 bytes icmp_seq=1 ttl=64 time=9ms</span><br><span class="dim">--- 0% packet loss · rtt avg 10ms ✓</span>',
+
+    'help': '<span class="dim">available:</span> ls projects · cat experience.txt · cat stack.txt · cat rtb.txt · git log --oneline · ping rootthisbox.org',
   };
 
   function runCmd(cmd) {
